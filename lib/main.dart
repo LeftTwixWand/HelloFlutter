@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:helloflutter/answer.dart';
+import 'package:helloflutter/question.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,23 +12,31 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-  var questionIndex = 0;
-  void answerQuestion() {
+  var _questionIndex = 0;
+  void _answerQuestion() {
     setState(() {
-      questionIndex = questionIndex + 1;
+      _questionIndex = _questionIndex + 1;
     });
 
-    print(questionIndex);
+    print(_questionIndex);
   }
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    var questions = [
-      "Question1",
-      "Question2",
-      "Question3",
-      "Question4",
+    const questions = const [
+      {
+        'questionText': 'What\'s your favourite color?',
+        'answers': ['Black', 'Red', 'Green', 'White']
+      },
+      {
+        'questionText': 'What\'s your favourite animal?',
+        'answers': ['Cat', 'Dog', 'Rabbit', 'Lion']
+      },
+      {
+        'questionText': 'Who\'s your favourite instructor?',
+        'answers': ['Max', 'Max']
+      },
     ];
 
     return MaterialApp(
@@ -36,21 +46,12 @@ class MyAppState extends State<MyApp> {
         ),
         body: Column(
           children: [
-            Text(
-              questions[questionIndex],
+            Question(
+              questions[_questionIndex]['questionText'],
             ),
-            RaisedButton(
-              child: Text("Answer 1"),
-              onPressed: answerQuestion,
-            ),
-            RaisedButton(
-              child: Text("Answer 2"),
-              onPressed: answerQuestion,
-            ),
-            RaisedButton(
-              child: Text("Answer 3"),
-              onPressed: answerQuestion,
-            ),
+            ...(questions[_questionIndex]['answers'] as List<String>)
+                .map((answer) => Answer(answer, _answerQuestion))
+                .toList()
           ],
         ),
       ),
